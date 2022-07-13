@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .flex {
+            display: flex;
+            gap: 5px;
+        }
+    </style>
+    <script src="./lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <label for="">添加名称</label>
+            <input type="text" v-model.trim="val">
+            <button @click="add">添加</button>
+        </div>
+
+        <div v-for="item in list" class="flex">
+            <label for="">{{item.id}}</label>
+            <input type="checkbox" name="" :id="'cl' + item.id " v-model="item.status">
+            <label :for="'cl' + item.id">{{item.name}}</label>
+            <label for="" @click="remove">删除</label>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                val: '',
+                ip: 4,
+                list: [{
+                        id: 1,
+                        name: '感觉',
+                        status: false
+                    },
+                    {
+                        id: 2,
+                        name: '精神',
+                        status: false
+                    },
+                    {
+                        id: 3,
+                        name: '情绪',
+                        status: false
+                    }
+                ]
+            },
+            methods: {
+                remove(e) {
+                    e.target.parentNode.remove()
+                    console.log(event.target);
+                },
+                add() {
+                    if (this.val === '') {
+                        alert('请您输入名称');
+                        return
+                    }
+                    var obj = {
+                        id: this.ip++,
+                        name: this.val,
+                        status: true
+                    }
+                    this.list.push(obj);
+                    this.val = '';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

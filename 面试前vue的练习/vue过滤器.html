@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>massage： {{msg | capi}}</p>
+    </div>
+    <div id="app2">
+        <p>massage： {{msg | capi}}</p>
+    </div>
+</body>
+<script>
+    Vue.filter('capi',function(res){
+       let filt = res.charAt(1).toUpperCase();
+       let sli = res.slice(2);
+       return filt + sli
+
+    })
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            msg:' this is 少壮不努力',
+        },  //在 vue2中可以使用 filters 过滤器  vue3中已经不要了
+        filters:{
+            // 过滤器函数的形参val 永远都是 | "管道符"前面的值
+            capi(val){
+                // 字符串有charAt方法  这个方法接收索引值  会把索引值对应的字符获取出来
+                let first = val.charAt(1).toLocaleUpperCase()
+                console.log(first);
+                // 字符串slice方法 可以截取字符串 
+                let othen = val.slice(2);
+                console.log(othen);
+                // console.log(val.charAt(3).toLocaleUpperCase());
+                // 强调 过滤器一定要有返回值
+                return first+othen
+            }
+        }
+    })
+
+    var vm = new Vue({
+        el:'#app2',
+        data:{
+            msg:' this is 老大徒伤悲',
+        },  //在 vue2中可以使用 filters 过滤器  vue3中已经不要了
+        
+    })
+</script>
+</html>

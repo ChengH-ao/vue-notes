@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/dayjs.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+        <div>
+            <label for="">品牌名称</label>
+            <input type="text" v-model.trim="brand" placeholder="请输入品牌名称">
+            <button @click="add">添加</button>
+        </div> 
+        <div v-for="item in list" class="pop">
+            <input type="checkbox" name="" :id="'cl'+item.name" v-model="item.status">
+            <label :for="'cl'+item.name" v-if="item.status">已禁用</label>
+            <label :for="'cl'+item.name" v-else>已启动</label>
+            <label for="">{{item.name}}</label>
+            <label for="">{{item.time | dateFromat }}</label>
+            <label for="" @click="remove">删除</label>
+        </div>
+        
+    </div>
+</body>
+<script>
+    Vue.filter('dateFromat',function(time){
+        // 1.对time格式化处理 得到yyyy-mm-dd
+        // 2.把格式化的结果return出去
+        const str = dayjs(time).format('YYYY-MM-DD-HH-mm');
+        return str
+    })
+    var vm = new Vue({
+        el:'#app',
+        data:{
+               // 用户输入的品牌名称
+            brand:'',
+            // nextId是下一个，可用的id
+            nextId:4,
+            list:[
+                {id:1,status:true,name:'宝马',time:new Date()},
+                {id:2,status:false,name:'奔驰',time:new Date()},
+                {id:3,status:false,name:'大路虎',time:new Date()},
+            ],
+        },
+        methods:{
+
+            remove(e){
+                e.target.parentNode.remove();
+              
+            },
+            // 阻止from表单的默认提出行为之后，触发add放到  @submit.prevent="点击事件"
+           add(){
+            if(this.brand === ''){
+                alert('请输入品牌名称！')
+                return
+            }
+            // 1.先把要添加的品牌对象，整理出来
+            var obj={
+                id:this.nextId,
+                status:true,
+                name:this.brand
+            }
+            console.log(this.brand );
+            // 2.往this list数组中push 到对象中去
+            this.list.push(obj);
+            // 3.清空this.brand让this.nextId自增加+1
+            this.brand='';
+            this.nextId++;
+           }
+        }
+    })
+</script>
+</html>
